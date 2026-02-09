@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import matplotlib.dates as mdates
 
 # ==============================
 # CONFIG
@@ -54,9 +55,21 @@ def main():
     plt.plot(result.index, result["breadth_pct"], linewidth=1.5)
     plt.ylim(0, 100)
     plt.grid(alpha=0.3)
+
     plt.title("Nifty 500 Short-Term Sentiment Breadth (Option A – 20D)")
     plt.ylabel("Breadth (%)")
     plt.xlabel("Date")
+
+    ax = plt.gca()
+
+    # Major ticks: every 2 months (cleaner). Change to interval=1 for every month.
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b-%Y"))  # e.g., Jan-2025
+
+    # Minor ticks: every month (optional, helps visual alignment)
+    ax.xaxis.set_minor_locator(mdates.MonthLocator(interval=1))
+
+    plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.savefig(OUTPUT_IMG, dpi=150)
     plt.close()
